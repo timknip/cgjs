@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>cgjs</title>
+		<script type="text/javascript" src="src/Pointi.js"> </script>
+		<script type="text/javascript" src="src/Vertex.js"> </script>
+		<script type="text/javascript" src="src/Edge.js"> </script>
+		<script type="text/javascript" src="src/Face.js"> </script>
+		<script type="text/javascript" src="src/VertexList.js"> </script>
+		<script type="text/javascript" src="src/EdgeList.js"> </script>
+		<script type="text/javascript" src="src/FaceList.js"> </script>
+		<script type="text/javascript" src="src/Polygon.js"> </script>
+		<script type="text/javascript" src="src/ConvexHull3D.js"> </script>
+		<script type="text/javascript">
+			function test() {
+				var list = new Polygon();
+				
+				list.push(new Vertex(-20, -10 ,0));
+				list.push(new Vertex( 10, -10 ,0));
+				list.push(new Vertex( 10,  10, 0));
+				list.push(new Vertex(-20,  10, 10));
+				
+				var point = new Pointi(0, 0, 0);
+				
+				var e = document.getElementById("tt");
+				
+				list.reverseCompletely();
+				
+				try {
+					e.innerHTML = "a " + list.n + " " + list.area2() + " " +
+					list.pointInPolygon(point) + " " +
+					list.centroid() + "<br/>" +
+					(list.head instanceof Vertex);
+				} catch(e) {
+					alert(e);
+				}
+				
+				var v = list.head;
+				do {
+					e.innerHTML += "<br/>" + v.toString();
+					v = v.next;
+				} while (v != list.head);
+					e.innerHTML += "<br/>";
+				try {
+					var hull = new ConvexHull3D();
+					hull.vlist = list;
+					if (hull.doubleTriangle()) {
+						hull.constructHull();
+						var f = hull.flist.head;
+						do {
+							e.innerHTML += "<br/>" + f.vertex[0] + " " + f.vertex[1] + " " + f.vertex[2];
+							f = f.next;
+						} while (f != hull.flist.head);
+					}
+				} catch (ex) {
+					alert(ex);
+				}
+			}
+		</script>
+	</head>
+	<body onload="test()">
+		<div id="tt"></div>
+	</body>
+</html>
