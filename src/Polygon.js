@@ -1,3 +1,20 @@
+/**
+ * C code written by Joseph O'Rourke.
+ * Java code written by Irena Pashchenko, Octavia Petrovici, Lilla Zollei,
+ * and Joseph O'Rourke.
+ * Last modified: June 1998
+ * Questions to orourke@cs.smith.edu.
+ * --------------------------------------------------------------------
+ * This code is Copyright 1998 by Joseph O'Rourke.  It may be freely
+ * redistributed in its entirety provided that this copyright notice is
+ * not removed.
+ * 
+ * JS port by:
+ *
+ * @author Tim Knip (tim at floorplanner.com)
+ *
+ * June 2010
+ */
 
 Polygon.prototype = new VertexList();
 Polygon.prototype.constructor = Polygon;
@@ -39,6 +56,25 @@ Polygon.prototype.centroid = function() {
 	cx *= factor;
 	cy *= factor;
 	return new Pointi(cx, cy, 0);
+}
+
+Polygon.prototype.isCcw = function() {
+	return (this.area2() > 0);
+}
+
+Polygon.prototype.isConvex = function() {
+	var v = this.head;
+	var flag = true;
+
+	do {
+		if (!v.v.leftOn( v.v, v.next.v, v.next.next.v)) {
+			flag = false;
+			break;
+		}
+		v = v.next;
+	} while (v != this.head);
+	
+	return flag;
 }
 
 Polygon.prototype.pointInPolygon = function(point) {
