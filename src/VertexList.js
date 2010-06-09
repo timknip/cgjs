@@ -41,6 +41,20 @@ VertexList.prototype = {
 		return list;
 	},
 	
+	getElement: function(index) {
+		var v = new Vertex();
+		var i;
+		if (index <= this.n) {
+			v = this.head;
+			for (i = 0; i < index; i++) {
+				v = v.next;
+			}
+		} else {
+			v = new Vertex(10000, 10000, 0);
+		}
+	   	return v;	
+	},
+	
 	insertBefore: function(item, before) {
 		if (this.head == null) {
 			this.head = item;
@@ -82,6 +96,13 @@ VertexList.prototype = {
 		item.prev.next = item.next;
 		item.next.prev = item.prev;
 		this.n--;
+	},
+	
+	resetVertex: function(resV, x, y, vnum, mark) {
+		resV.v.x = x;
+	    resV.v.y = y;
+		resV.vnum = vnum != undefined ? vnum : resV.vnum;
+		resV.mark = mark != undefined ? mark : resV.mark;
 	},
 	
 	reverse: function() {
