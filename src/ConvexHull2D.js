@@ -119,6 +119,7 @@ ConvexHull2D.prototype = {
 			this.squash();
 		}
 		this.top = this.graham();
+		return this.top;
 	},
 	
 	sort: function(a, lo0, hi0) {

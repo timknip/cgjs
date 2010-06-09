@@ -13,72 +13,69 @@
 		<script type="text/javascript" src="src/ConvexHull2D.js"> </script>
 		<script type="text/javascript">
 			function test() {
-				var list = new Polygon();
+				var polygon = new Polygon();
 				
-				list.push(new Vertex(-20, -10 ,0));
-				list.push(new Vertex( 10, -10 ,0));
-				list.push(new Vertex( 10,  10, 0));
-				list.push(new Vertex(-20,  10, 10));
+				polygon.push(new Vertex(-20, -10 ,0));
+				polygon.push(new Vertex( 10, -10 ,0));
+				polygon.push(new Vertex( 10,  10, 0));
+				polygon.push(new Vertex(-20,  10, 10));
 				
-				var point = new Pointi(0, 0, 0);
+				var log = document.getElementById("log");
+
+				log.innerHTML += "<br/><strong>Polygon:</strong>";
 				
-				var e = document.getElementById("tt");
-				
-				list.reverseCompletely();
-				
-				try {
-					e.innerHTML = "a " + list.n + " " + list.area2() + " " +
-					list.pointInPolygon(point) + " " +
-					list.centroid() + "<br/>" +
-					(list.head instanceof Vertex);
-				} catch(e) {
-					alert(e);
-				}
-				
-				list.push(new Vertex(0, 0, 1));
-				
-				var v = list.head;
+				var v = polygon.head;
 				do {
-					e.innerHTML += "<br/>" + v.toString();
+					log.innerHTML += "<br/>" + v.toString();
 					v = v.next;
-				} while (v != list.head);
+				} while (v != polygon.head);
 				
-				e.innerHTML += "<br/><strong>ConvexHull3D</strong>";
+				var testPoint = new Pointi(0, 0, 0);
+				
+				log.innerHTML += "<br/>&nbsp;&nbsp;<strong> num</strong>: " + polygon.n;
+				log.innerHTML += "<br/>&nbsp;&nbsp;<strong> area2d</strong>: " + polygon.area2();
+				log.innerHTML += "<br/>&nbsp;&nbsp;<strong> centroid</strong>: " + polygon.centroid();
+				log.innerHTML += "<br/>&nbsp;&nbsp;<strong> ccw</strong>: " + polygon.isCcw();
+				log.innerHTML += "<br/>&nbsp;&nbsp;<strong> pointInPolygon</strong>: (test point:+"+ testPoint +") => " +
+ 			
+				polygon.pointInPolygon(testPoint);
+
+				log.innerHTML += "<br/><strong>ConvexHull2D</strong>";
+
+				try {
+					var hull2d = new ConvexHull2D(polygon);
+
+					hull2d.runHull();
+
+					v = hull2d.top.head;
+					do {
+						log.innerHTML += "<br/>" + v;
+						v = v.next;
+					} while (v != hull2d.top.head);
+				} catch (ex2) {
+					alert(ex2);
+				}
+								
+				log.innerHTML += "<br/><strong>ConvexHull3D</strong>";
 				
 				try {
 					var hull = new ConvexHull3D();
-					hull.vlist = list;
+					hull.vlist = polygon;
 					if (hull.doubleTriangle()) {
 						hull.constructHull();
 						var f = hull.flist.head;
 						do {
-							e.innerHTML += "<br/>" + f.vertex[0] + " " + f.vertex[1] + " " + f.vertex[2];
+							log.innerHTML += "<br/>" + f.vertex[0] + " " + f.vertex[1] + " " + f.vertex[2];
 							f = f.next;
 						} while (f != hull.flist.head);
 					}
 				} catch (ex) {
 					alert(ex);
 				}
-				
-				e.innerHTML += "<br/><strong>ConvexHull2D</strong>";
-				
-				try {
-					var hull2d = new ConvexHull2D(list);
-					
-					hull2d.runHull();
-					
-					v = hull2d.top.head;
-					do {
-						e.innerHTML += "<br/>" + v;
-						v = v.next;
-					} while (v != hull2d.top.head);
-				} catch (ex2) {
-					alert(ex2);
-				}
 			}
 		</script>
 	</head>
 	<body onload="test()">
-		<div id="tt"></div>
+		<div id="log"></div>
 	</body>
 </html>
