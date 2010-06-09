@@ -69,6 +69,11 @@ ConvexHull3D.prototype = {
 	    return true;
 	},
 	
+	/** 
+	 * CleanUp goes through each data structure list and clears all
+     * flags and NULLs out some pointers.  The order of processing
+     * (edges, faces, vertices) is important.
+	 */
 	clean: function() {
 		this.cleanEdges();
 		this.cleanFaces();
@@ -179,6 +184,10 @@ ConvexHull3D.prototype = {
 	    } while (v != this.vlist.head);
 	},
 	
+	/**
+	 * Collinear checks to see if the three points given are collinear,
+     * by checking to see if each element of the cross product is zero.
+ 	 */
 	collinear: function(a, b, c) {
 		return (( c.v.z - a.v.z ) * ( b.v.y - a.v.y ) -
 		      ( b.v.z - a.v.z ) * ( c.v.y - a.v.y ) == 0
@@ -188,6 +197,10 @@ ConvexHull3D.prototype = {
 		      ( b.v.y - a.v.y ) * ( c.v.x - a.v.x ) == 0);	
 	},
 	
+	/**
+	 * ConstructHull adds the vertices to the hull one at a time.  The hull
+     * vertices are those in the list marked as onhull.
+	 */
 	constructHull: function() {
 		var v = this.vlist.head;
 		var vnext;
@@ -255,6 +268,11 @@ ConvexHull3D.prototype = {
 	    return true;
 	},
 	
+	/**
+	 * MakeCcw puts the vertices in the face structure in counterclock wise 
+     * order.  We want to store the vertices in the same 
+     * order as in the visible face.  The third vertex is always p.
+     */
 	makeCCW: function(f, e, p) {
 		var fv; // The visible face adjacent to e
 		var i;	// Index of e.endpoint[0] in fv.
@@ -288,6 +306,10 @@ ConvexHull3D.prototype = {
 		f.vertex[2] = p;
 	},
 	
+	/**
+	 * MakeFace creates a new face structure from three vertices (in ccw
+     * order).  It returns a pointer to the face.
+     */
 	makeFace: function(v0, v1, v2, fold) {
 		var f, e0, e1, e2;
 		// Create edges of the initial triangle.
@@ -320,6 +342,11 @@ ConvexHull3D.prototype = {
   		return f;
 	},
 	
+	/** 
+	 * MakeConeFace makes a new face and two new edges between the 
+     * edge and the point that are passed to it. It returns a pointer to
+     * the new face.
+     */
 	makeConeFace: function(e, p) {
 		var new_edge = new Array(2);
 		var new_face;
@@ -356,6 +383,13 @@ ConvexHull3D.prototype = {
 		return new_face;
 	},
 	
+	/**
+	 * VolumeSign returns the sign of the volume of the tetrahedron determined 
+	 * by f and p.  VolumeSign is +1 iff p is on the negative side of f, 
+	 * where the positive side is determined by the rh-rule.  So the volume 
+	 * is positive if the ccw normal to f points outside the tetrahedron. 
+	 * The final fewer-multiplications form is due to Robert Fraczkiewicz.
+	 */
 	volumeSign: function(f, p) {
 		var ax = f.vertex[0].v.x;
 	    var ay = f.vertex[0].v.y;
