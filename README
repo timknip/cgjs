@@ -1,3 +1,7 @@
 Computational Geometry for Javascript
+=============================================================
 
-An JS port of http://www.cs.sunysb.edu/~algorith/implement/orourke/implement.shtml
+A JS port of the example code in "Computational Geometry in C" by Joseph O'Rourke http://maven.smith.edu/~orourke/books/compgeom.html
+
+The C and Java code can be found here:
+http://www.cs.sunysb.edu/~algorith/implement/orourke/implement.shtml
