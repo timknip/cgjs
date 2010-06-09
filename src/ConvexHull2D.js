@@ -152,7 +152,7 @@ ConvexHull2D.prototype = {
 		var i;
 		for (i = 0; i < this.list.n; i++) {
 			if (v.mark) {
-				list.remove(v);
+				this.list.remove(v);
 			}
 			v = v.next;
 		}
