@@ -18,7 +18,7 @@ ConvexHull2D.prototype = {
 		var pi = tpi;
 		var pj = tpj;
 		var myhead = this.list.head;
-		var a = a = myhead.v.areaSign(myhead.v, pi.v, pj.v);
+		var a = myhead.v.areaSign(myhead.v, pi.v, pj.v);
 		
 		if (a > 0) {
 			return -1;
